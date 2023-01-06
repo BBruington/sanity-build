@@ -1,15 +1,19 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link';
 import Nav from '../components/nav'
 import { sanityClient, urlFor } from '../utils/sanity'
 import { Post } from "../utils/typings";
 
 
 interface Props {
-  posts: [Post]
+  posts: [Post];
 }
 
-export default function Home(props: Props) {
+const Home = (props: Props) => {
+
+  const { posts } = props;
+  console.log(posts)
   return (
     <div className="max-w-7x1 mx-auto">
       <Head>
@@ -39,6 +43,12 @@ export default function Home(props: Props) {
         />
       </div>
       {/* posts */}
+      <div>
+        {posts.map(post => (
+          <Link key={post._id} href={`/post/${post.slug.current}`}>
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }
@@ -65,4 +75,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-
+export default Home

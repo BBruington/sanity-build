@@ -1,9 +1,15 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Nav from '../components/nav'
+import { sanityClient, urlFor } from '../utils/sanity'
+import { Post } from "../utils/typings";
 
-const Home: NextPage = () => {
+
+interface Props {
+  posts: [Post]
+}
+
+export default function Home(props: Props) {
   return (
     <div className="max-w-7x1 mx-auto">
       <Head>
@@ -38,7 +44,25 @@ const Home: NextPage = () => {
 }
 
 export const getServerSideProps = async () => {
-  const query = ''
-}
+  const query = `*[_type=="post"]{
+    _id,
+      title,
+      author -> {
+        name,
+        image
+      },
+      description,
+      mainImage,
+      slug
+  }`;
 
-export default Home
+  const posts = await sanityClient.fetch(query);
+
+  return {
+    props: {
+      posts,
+    },
+  };
+};
+
+

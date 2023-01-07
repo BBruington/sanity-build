@@ -46,6 +46,11 @@ const Home = (props: Props) => {
       <div>
         {posts.map(post => (
           <Link key={post._id} href={`/post/${post.slug.current}`}>
+            <div>
+              <img src={
+                urlFor(post.mainImage).url()!
+              } alt="" />
+            </div>
           </Link>
         ))}
       </div>

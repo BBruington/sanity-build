@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import Nav from "../../components/nav";
-import { sanityClient } from "../../utils/sanity";
+import { sanityClient, urlFor } from "../../utils/sanity";
 import { Post } from "../../utils/typings";
 
 interface Props {
@@ -12,11 +12,16 @@ function Post({post}: Props) {
   console.log('here is the post: ',post);
 
     return (
-        <>
+      <>
         <main>
-            <Nav />
+          <Nav />
+
+          <img className="w-full h-40 object-cover" src={urlFor(post.mainImage).url()} alt='' />
+          <article className="max-w-3x1">
+            <h1 className="text-3x1">{post.title}</h1>
+          </article>
         </main>
-        </>
+      </>
     )
 }
 
@@ -76,6 +81,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     return {
       props: {
         post,
-      }
+      },
+      revalidate: 60, //update old cache every 60 seconds
     }
 }

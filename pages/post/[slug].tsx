@@ -18,8 +18,16 @@ interface Props {
 //interface Props allows me to destructure post from props
 function Post({post}: Props) {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<IformInput>();
-  
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } } = useForm<IformInput>();
+  // I'm using the react-hook-form submit handler and it should expet my IformInput params
+  const onSubmit: SubmitHandler<IformInput> = async (data) => {
+    
+    console.log(data)
+  }
+
   return (
     <>
       <main>
@@ -72,7 +80,9 @@ function Post({post}: Props) {
 
         <hr className="max-w-lg my-5 mx-auto border border-yellow-500" />
         
-        <form className="flex flex-col p-10 my-10 max-w-2xl mx-auto mb-10">
+        <form 
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col p-10 my-10 max-w-2xl mx-auto mb-10">
           
           <h3 className="text-sm text-yellow-500">Enjoyed this article?</h3>
           <h4 className="text-3xl font-bold">Leave a comment below!</h4>
@@ -89,19 +99,24 @@ function Post({post}: Props) {
             <span className="text-gray-700">Name</span> {/*block elements have their own width */}
             <input 
             {...register("name", { required: true })}
-            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" placeholder="John Appleseed" type="text" />
+            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+            placeholder="John Appleseed" type="text" />
           </label>
+
           <label className="block mb-5">
             <span className="text-gray-700">Email</span>
             <input
             {...register("email", { required: true })}
-            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" placeholder="John Appleseed" type="text" />
+            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+            placeholder="John Appleseed" type="email" />
           </label>
+
           <label className="block mb-5">
             <span className="text-gray-700">Comment</span>
             <textarea 
             {...register("comment", { required: true })}            
-            className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 outline-none focus:ring" placeholder="John Appleseed" rows={8}/>
+            className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+            placeholder="John Appleseed" rows={8}/>
           </label>
 
           {/* this is where errors from lack of fields validation appear */}
@@ -118,7 +133,10 @@ function Post({post}: Props) {
             )}
           </div>
 
-          <input type="submit" className="shadow bg-yellow-500 hover:bg-yellow-400" />
+          <input 
+          type="submit" 
+          className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded cursor-pointer" 
+          />
 
         </form>
 

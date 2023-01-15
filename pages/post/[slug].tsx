@@ -19,13 +19,21 @@ interface Props {
 function Post({post}: Props) {
 
   const { 
+    
     register, 
     handleSubmit, 
     formState: { errors } } = useForm<IformInput>();
-  // I'm using the react-hook-form submit handler and it should expet my IformInput params
+  
+    // I'm using the react-hook-form submit handler and it should expet my IformInput params from TypeScript
   const onSubmit: SubmitHandler<IformInput> = async (data) => {
-    
-    console.log(data)
+    await fetch('/api/createComment', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }).then( () => {
+      console.log(data)
+    }).catch((e) => {
+      console.error(e);
+    })
   }
 
   return (

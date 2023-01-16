@@ -4,6 +4,7 @@ import Nav from "../../components/nav";
 import { sanityClient, urlFor } from "../../utils/sanity";
 import { Post } from "../../utils/typings";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 
 interface IformInput {
   _id: string;
@@ -18,6 +19,8 @@ interface Props {
 //interface Props allows me to destructure post from props
 function Post({post}: Props) {
 
+  const [submitted, setSubmitted] = useState(false);
+
   const { 
     
     register, 
@@ -31,8 +34,10 @@ function Post({post}: Props) {
       body: JSON.stringify(data),
     }).then( () => {
       console.log(data)
+      setSubmitted(true);
     }).catch((e) => {
       console.error(e);
+      setSubmitted(false);
     })
   }
 
@@ -88,65 +93,76 @@ function Post({post}: Props) {
 
         <hr className="max-w-lg my-5 mx-auto border border-yellow-500" />
         
-        <form 
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col p-10 my-10 max-w-2xl mx-auto mb-10">
-          
-          <h3 className="text-sm text-yellow-500">Enjoyed this article?</h3>
-          <h4 className="text-3xl font-bold">Leave a comment below!</h4>
-          <hr className="py-3 my-2"></hr>
-
-          <input 
-            {...register("_id")}
-            type="hidden"
-            name="_id"
-            value={post._id}
-          />
-
-          <label className="block mb-5">
-            <span className="text-gray-700">Name</span> {/*block elements have their own width */}
-            <input 
-            {...register("name", { required: true })}
-            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-            placeholder="John Appleseed" type="text" />
-          </label>
-
-          <label className="block mb-5">
-            <span className="text-gray-700">Email</span>
-            <input
-            {...register("email", { required: true })}
-            className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-            placeholder="John Appleseed" type="email" />
-          </label>
-
-          <label className="block mb-5">
-            <span className="text-gray-700">Comment</span>
-            <textarea 
-            {...register("comment", { required: true })}            
-            className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-            placeholder="John Appleseed" rows={8}/>
-          </label>
-
-          {/* this is where errors from lack of fields validation appear */}
-          <div className="flex flex-col p-5">
-            {/* this is connected to register / formstate and notices the fields are required */}
-            {errors.name && (
-              <span className="text-red-500">- The Name Field is required</span>
-            )}
-            {errors.comment && (
-              <span className="text-red-500">- The Comment Field is required</span>
-            )}
-            {errors.email && (
-              <span className="text-red-500">- The Email Field is required</span>
-            )}
+        {submitted ? (
+          <div className="flex flex-col py-10 my-10 bg-yellow-500 text-white max-w-2xl mx-auto">
+              <h3 className="text-3xl font-bold">Thank you for your comment</h3>
+              <p>Once it has been approved, it will appear below.</p>
           </div>
+        )
+        :
+        (
+          <form 
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col p-10 my-10 max-w-2xl mx-auto mb-10">
+            
+            <h3 className="text-sm text-yellow-500">Enjoyed this article?</h3>
+            <h4 className="text-3xl font-bold">Leave a comment below!</h4>
+            <hr className="py-3 my-2"></hr>
 
-          <input 
-          type="submit" 
-          className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded cursor-pointer" 
-          />
+            <input 
+              {...register("_id")}
+              type="hidden"
+              name="_id"
+              value={post._id}
+            />
 
-        </form>
+            <label className="block mb-5">
+              <span className="text-gray-700">Name</span> {/*block elements have their own width */}
+              <input 
+              {...register("name", { required: true })}
+              className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+              placeholder="John Appleseed" type="text" />
+            </label>
+
+            <label className="block mb-5">
+              <span className="text-gray-700">Email</span>
+              <input
+              {...register("email", { required: true })}
+              className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+              placeholder="John Appleseed" type="email" />
+            </label>
+
+            <label className="block mb-5">
+              <span className="text-gray-700">Comment</span>
+              <textarea 
+              {...register("comment", { required: true })}            
+              className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
+              placeholder="John Appleseed" rows={8}/>
+            </label>
+
+            {/* this is where errors from lack of fields validation appear */}
+            <div className="flex flex-col p-5">
+              {/* this is connected to register / formstate and notices the fields are required */}
+              {errors.name && (
+                <span className="text-red-500">- The Name Field is required</span>
+              )}
+              {errors.comment && (
+                <span className="text-red-500">- The Comment Field is required</span>
+              )}
+              {errors.email && (
+                <span className="text-red-500">- The Email Field is required</span>
+              )}
+            </div>
+
+            <input 
+            type="submit" 
+            className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded cursor-pointer" 
+            />
+
+          </form>
+
+        )}
+
 
       </main>
     </>

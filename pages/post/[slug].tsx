@@ -19,6 +19,8 @@ interface Props {
 //interface Props allows me to destructure post from props
 function Post({post}: Props) {
 
+  console.log('here are the posts', post);
+
   const [submitted, setSubmitted] = useState(false);
 
   const { 
@@ -121,7 +123,7 @@ function Post({post}: Props) {
               <input 
               {...register("name", { required: true })}
               className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-              placeholder="John Appleseed" type="text" />
+              placeholder="John Smith" type="text" />
             </label>
 
             <label className="block mb-5">
@@ -129,7 +131,7 @@ function Post({post}: Props) {
               <input
               {...register("email", { required: true })}
               className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-              placeholder="John Appleseed" type="email" />
+              placeholder="email@hotmail.com" type="email" />
             </label>
 
             <label className="block mb-5">
@@ -137,7 +139,7 @@ function Post({post}: Props) {
               <textarea 
               {...register("comment", { required: true })}            
               className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 outline-none focus:ring" 
-              placeholder="John Appleseed" rows={8}/>
+              placeholder="Leave a comment here" rows={8}/>
             </label>
 
             {/* this is where errors from lack of fields validation appear */}
@@ -163,6 +165,20 @@ function Post({post}: Props) {
 
         )}
 
+        {/* Comments are here */}
+
+        <div className="flex flex-col p-10 my-10 max-w-2xl mx-auto shadow-yellow-500 shadow space-y-2">
+          <h3 className="text-4xl">Comments</h3>
+          <hr className="pb-2" />
+
+          {post.comments.map((comment) => (
+            <div key={comment._id}>
+              <p>
+                <span className="text-yellow-500">{comment.name}: </span>{comment.comment}
+              </p>
+            </div>
+          ))}
+        </div>
 
       </main>
     </>

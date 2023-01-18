@@ -171,13 +171,17 @@ function Post({post}: Props) {
           <h3 className="text-4xl">Comments</h3>
           <hr className="pb-2" />
 
-          {post.comments.map((comment) => (
+          {post.comments[0] ? (post.comments.map((comment) => (
             <div key={comment._id}>
               <p>
                 <span className="text-yellow-500">{comment.name}: </span>{comment.comment}
               </p>
             </div>
-          ))}
+          )))
+        :
+        (
+          <div>Wow such empty comments</div>
+        )}
         </div>
 
       </main>

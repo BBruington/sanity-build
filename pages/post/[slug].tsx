@@ -19,12 +19,10 @@ interface Props {
 //interface Props allows me to destructure post from props
 function Post({post}: Props) {
 
-  console.log('here are the posts', post);
 
   const [submitted, setSubmitted] = useState(false);
 
   const { 
-    
     register, 
     handleSubmit, 
     formState: { errors } } = useForm<IformInput>();
@@ -34,8 +32,7 @@ function Post({post}: Props) {
     await fetch('/api/createComment', {
       method: 'POST',
       body: JSON.stringify(data),
-    }).then( () => {
-      console.log(data)
+    }).then(() => {
       setSubmitted(true);
     }).catch((e) => {
       console.error(e);
